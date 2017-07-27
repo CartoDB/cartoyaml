@@ -1,30 +1,29 @@
-import Utils from '../utils/utils';
+var Utils = require('../utils/utils');
 var Colors = {};
 
-export default Colors;
 
 let C = Colors;
 
 Colors._isHex = Utils.functionString(
-  `function isHex (c) {
+	`function isHex (c) {
 		return c.indexOf('#') >= 0;
 	}`
 );
 
 Colors._isRGB = Utils.functionString(
-  `function (c) {
+	`function (c) {
 		return c.indexOf('rgb') >= 0;
 	}`
 );
 
 Colors._isRGBA = Utils.functionString(
-  `function (c) {
+	`function (c) {
 		return c.indexOf('rgba') >= 0;
 	}`
 );
 
 Colors.toSixHex = Utils.functionString(
-  `function (c) {
+	`function (c) {
 			if (c.length === 7) {
 				return c;
 			}
@@ -39,13 +38,13 @@ Colors.toSixHex = Utils.functionString(
 );
 
 Colors.hexToInt = Utils.functionString(
-  `function (hex) {
+	`function (hex) {
 		return parseInt('0x' + hex);
 	}`
 );
 
 Colors.toRGB = Utils.functionString(
-  `function (c) {
+	`function (c) {
 		var r = ${C.hexToInt}(c.substr(1, 2)) + ', ',
 			g = ${C.hexToInt}(c.substr(3, 2)) + ', ',
 			b = ${C.hexToInt}(c.substr(5, 2));
@@ -55,13 +54,13 @@ Colors.toRGB = Utils.functionString(
 );
 
 Colors.toRGBA = Utils.functionString(
-  `function (rgb, alpha) {
+	`function (rgb, alpha) {
 		return rgb.replace('rgb', 'rgba').replace(')', ', ' + alpha + ')');
 	}`
 );
 
 Colors.getAlphaColorFn = Utils.functionString(
-  `function (color, opacity) {
+	`function (color, opacity) {
 		// TODO: review this fallback to 'black' color.
 		color = color || '#000';
     var toRGBA = ${C.toRGBA};
@@ -80,14 +79,17 @@ Colors.getAlphaColorFn = Utils.functionString(
 );
 
 Colors.getAlphaColor = function (color, opacity) {
-  if (color && typeof opacity !== 'number') {
-    return Utils.functionString(
-      `function () {
+	if (color && typeof opacity !== 'number') {
+		return Utils.functionString(
+			`function () {
           var op = ${opacity}();
           return ${C.getAlphaColorFn}(${color}(), typeof op === "number" ? op : 1);
       }`
-    );
-  }
+		);
+	}
 
-  return color;
+	return color;
 };
+
+
+module.exports = Colors;

@@ -1,7 +1,17 @@
-import { compose, curry, either, prop, defaultTo, apply, values, ifElse, applySpec } from 'ramda';
-import Utils from '../utils/utils';
-import TangramReference from '../utils/reference';
-import Colors from '../style/colors';
+var ramda = require('ramda');
+var either = ramda.either;
+var prop = ramda.prop;
+var defaultTo = ramda.defaultTo;
+var apply = ramda.apply;
+var values = ramda.values;
+var ifElse = ramda.ifElse;
+var applySpec = ramda.applySpec;
+var curry = ramda.curry;
+var compose = ramda.compose;
+
+var Utils = require('../utils/utils');
+var TangramReference = require('../utils/reference');
+var Colors = require('../style/colors');
 
 
 /*
@@ -14,8 +24,8 @@ const curryComp = Utils.curryCompose3;
   REFERENCE HELPER
  */
 
-const generateDefaultFromRef = function(Ref, prop) {
-	return { js: Utils.generateDefault(`"${Ref[prop]['default-value']}"`) };
+const generateDefaultFromRef = function (Ref, prop) {
+  return { js: Utils.generateDefault(`"${Ref[prop]['default-value']}"`) };
 };
 
 const getDefProp = curry((prop, ref) => {
@@ -77,7 +87,7 @@ const getColorFn = (fill, alpha) => {
   );
 };
 
-export {
+module.exports = {
   generateDefaultFromRef,
   getDefProp,
   getProp,

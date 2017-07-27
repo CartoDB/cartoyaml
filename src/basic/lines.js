@@ -14,15 +14,26 @@
 	EXTERNAL DEPENDENCIES
  */
 
-import {curry, compose, not, equals, identity, cond} from 'ramda';
+var ramda = require('ramda');
+var not = ramda.not;
+var curry = ramda.curry;
+var compose = ramda.compose;
+var equals = ramda.equals;
+var identity = ramda.identity;
+var cond = ramda.cond;
 
 /*
 	INTERNAL DEPENDENCIES
  */
 
-import { getExecutedFn, getPropertyOrDefFn, getBlendFn, getColorFn } from '../utils/reference-helpers';
-import TangramReference from '../utils/reference';
-import Geom from '../utils/geom';
+var referenceHelpers = require('../utils/reference-helpers.js');
+var getExecutedFn = referenceHelpers.getExecutedFn;
+var getPropertyOrDefFn = referenceHelpers.getPropertyOrDefFn;
+var getBlendFn = referenceHelpers.getBlendFn;
+var getColorFn = referenceHelpers.getColorFn;
+var TangramReference = require('../utils/reference');
+
+var Geom = require('../utils/geom');
 
 const notEq = curry(compose(not, equals));
 
@@ -44,15 +55,6 @@ const getColor = getColorFn(
   getPropertyOrDefFn('stroke', LR),
   getPropertyOrDefFn('stroke-opacity', LR)
 );
-
-/**
- * Function for getting extrude property
- *
- * @param   {object} c3ss compiled carto css
- * @returns {object} with a function that contain the conditions to return the extrude
- */
-
-const getExtrude = getPropertyOrDefFn('tg-stroke-extrude');
 
 /**
  * Function for getting the width in meters dynamically by zoom
@@ -110,7 +112,6 @@ const getDashed = compose(
 
 var Line = {};
 
-export default Line;
 
 /**
  * Function to get the draw object of a line.
@@ -138,7 +139,7 @@ Line.getDraw = (c3ss, id) => {
  *
  * @returns default style configuration for lines
  */
-Line.getStyle = function(c3ss, id, ord) {
+Line.getStyle = function (c3ss, id, ord) {
   let style = {};
 
   style['lines_' + id] = {
@@ -150,3 +151,6 @@ Line.getStyle = function(c3ss, id, ord) {
 
   return style;
 };
+
+
+module.exports = Line;
