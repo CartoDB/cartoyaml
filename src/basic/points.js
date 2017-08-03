@@ -12,7 +12,6 @@
 /*
 	EXTERNAL DEPENDENCIES
  */
-const MD5 = require('md5');
 const ramda = require('ramda');
 
 const compose = ramda.compose;
@@ -98,17 +97,6 @@ const getWidths = compose(
 
 const getCollide = getExecutedFn('allow-overlap', PR);
 
-const getTextureFile = getExecutedFn('file', PR);
-
-/**
- * Get texture from marker-file in cartocss [NON-DYNAMIC]
- * @param  {object} c3ss compiled carto css
- * @return {object}      return draw object with a non-dynamic texture.
- */
-const getTexture = compose(
-  MD5,
-  getTextureFile
-);
 
 const getBlending = getBlendFn(PR);
 
@@ -160,24 +148,10 @@ Point.getStyle = function(c3ss, id, ord) {
 
 	if (checkMarkerSym(c3ss)) {
     let p = style['points_' + id];
-    p.texture = getTextureFile(c3ss) !== 'none' ? getTexture(c3ss) : void 0;
     p.blend = getBlending(c3ss);
 	}
 
 	return style;
-};
-
-Point.getTextures = function(c3ss) {
-  let tex = {};
-	if (checkMarkerSym(c3ss)) {
-		let texture = getTextureFile(c3ss);
-
-		if (texture !== 'none') {
-			tex[MD5(texture)] = {url: texture};
-		}
-
-		return tex;
-	}
 };
 
 module.exports = Point;
