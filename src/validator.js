@@ -16,4 +16,4 @@ function _validateNotFillFile(ccss) {
 }
 
 
-module.exports = { validateCSS }
+module.exports = { validateCSS };
