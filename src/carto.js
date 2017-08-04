@@ -34,6 +34,7 @@ const carto2Draw = function (ccss, index) {
 
     Object.assign(
         textures,
+        Points.getTextures(ly),
         Polygons.getTextures(ly)
       );
 
