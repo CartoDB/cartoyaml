@@ -1,16 +1,16 @@
 /*
-	 ________  ________  ___  ________   _________
-	|\   __  \|\   __  \|\  \|\   ___  \|\___   ___\
-	\ \  \|\  \ \  \|\  \ \  \ \  \\ \  \|___ \  \_|
-	 \ \   ____\ \  \\\  \ \  \ \  \\ \  \   \ \  \
-	  \ \  \___|\ \  \\\  \ \  \ \  \\ \  \   \ \  \
-	   \ \__\    \ \_______\ \__\ \__\\ \__\   \ \__\
-	    \|__|     \|_______|\|__|\|__| \|__|    \|__|
+   ________  ________  ___  ________   _________
+  |\   __  \|\   __  \|\  \|\   ___  \|\___   ___\
+  \ \  \|\  \ \  \|\  \ \  \ \  \\ \  \|___ \  \_|
+   \ \   ____\ \  \\\  \ \  \ \  \\ \  \   \ \  \
+    \ \  \___|\ \  \\\  \ \  \ \  \\ \  \   \ \  \
+     \ \__\    \ \_______\ \__\ \__\\ \__\   \ \__\
+      \|__|     \|_______|\|__|\|__| \|__|    \|__|
 
  */
 
 /*
-	EXTERNAL DEPENDENCIES
+ * EXTERNAL DEPENDENCIES
  */
 const MD5 = require('md5');
 const ramda = require('ramda');
@@ -25,7 +25,7 @@ const merge = ramda.merge;
 const mergeWith = ramda.mergeWith;
 
 /*
-	INTERNAL DEPENDENCIES
+ * INTERNAL DEPENDENCIES
  */
 const referenceHelpers = require('../utils/reference-helpers.js');
 const getExecutedFn = referenceHelpers.getExecutedFn;
@@ -39,7 +39,7 @@ const TangramReference = require('../utils/reference');
 const PR = TangramReference.getPoint(null); // Point reference
 
 /*
-	INTERNAL MARKER FUNCTIONS
+ * INTERNAL MARKER FUNCTIONS
  */
 
 const checkMarkerSym = TangramReference.checkSymbolizer('markers');
@@ -61,7 +61,7 @@ const getOutlineColor = getColorFn(
 );
 
 const getColors = compose(
-  pickBy(compose(not,isNil)),
+  pickBy(compose(not, isNil)),
   applySpec({
     color: getColor,
     outline: {
@@ -118,23 +118,21 @@ const getBlending = getBlendFn(PR);
 
 var Point = {};
 
-
 /**
  * Get the draw (for tangram) object of a point from compiled carto css
  * @param  {object} c3ss compiled carto @class
  * @return {object}      object with the draw types and their properties
  */
-Point.getDraw = function(c3ss, id) {
-	var point = {},
-      draw = {};
+Point.getDraw = function (c3ss, id) {
+  let point = {};
+  let draw = {};
 
-	if (checkMarkerSym(c3ss)) {
-
-		point = mergeWith(
+  if (checkMarkerSym(c3ss)) {
+    point = mergeWith(
         merge,
-				getWidths(c3ss),
-				getColors(c3ss)
-			);
+        getWidths(c3ss),
+        getColors(c3ss)
+      );
 
     point.collide = !getCollide(c3ss);
 	}
@@ -150,34 +148,35 @@ Point.getDraw = function(c3ss, id) {
  * @param  {[type]} c3ss  [description]
  * @return {[type]}       [description]
  */
-Point.getStyle = function(c3ss, id, ord) {
+Point.getStyle = function (c3ss, id, ord) {
   let style = {};
-  style['points_' + id] = {
-    base: 'points',
-    blend: 'overlay',
-    blend_order: ord || 1
-  };
 
-	if (checkMarkerSym(c3ss)) {
+  if (checkMarkerSym(c3ss)) {
+    style['points_' + id] = {
+      base: 'points',
+      blend: 'overlay',
+      blend_order: ord || 1
+    };
+
     let p = style['points_' + id];
     p.texture = getTextureFile(c3ss) !== 'none' ? getTexture(c3ss) : void 0;
     p.blend = getBlending(c3ss);
-	}
+  }
 
-	return style;
+  return style;
 };
 
-Point.getTextures = function(c3ss) {
+Point.getTextures = function (c3ss) {
   let tex = {};
-	if (checkMarkerSym(c3ss)) {
-		let texture = getTextureFile(c3ss);
+  if (checkMarkerSym(c3ss)) {
+    let texture = getTextureFile(c3ss);
 
-		if (texture !== 'none') {
-			tex[MD5(texture)] = {url: texture};
-		}
+    if (texture !== 'none') {
+      tex[MD5(texture)] = {url: texture};
+    }
 
-		return tex;
-	}
+    return tex;
+  }
 };
 
 module.exports = Point;

@@ -1,5 +1,6 @@
 const Carto = require('carto');
 const Points = require('./basic/points');
+const Dots = require('./basic/dots');
 const Polygons = require('./basic/polygons');
 const Lines = require('./basic/lines');
 const TextPoints = require('./basic/text');
@@ -19,14 +20,15 @@ const carto2Draw = function (ccss, index) {
 
   // NOTE: this is wrong, we have to separate the layers.
   for (var i = 0; i < layers.length; i++) {
-		let ly = layers[i].shader,
-        draw = {},
-        textures = {},
-        styles = {};
+    let ly = layers[i].shader;
+    let draw = {};
+    let textures = {};
+    let styles = {};
 
     Object.assign(
         draw,
         Points.getDraw(ly, id),
+        Dots.getDraw(ly, id),
         Polygons.getDraw(ly, id),
         Lines.getDraw(ly, id),
         TextPoints.getDraw(ly, id)
@@ -41,12 +43,13 @@ const carto2Draw = function (ccss, index) {
     Object.assign(
         styles,
         Points.getStyle(ly, id, index),
+        Dots.getStyle(ly, id, index),
         Polygons.getStyle(ly, id, index),
         Lines.getStyle(ly, id, index),
         TextPoints.getStyle(ly, id, index)
       );
 
-    tLy.push({textures, draw, styles, name:ly.attachment});
+    tLy.push({textures, draw, styles, name: ly.attachment});
   }
 
   return tLy;

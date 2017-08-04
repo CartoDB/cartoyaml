@@ -11,13 +11,13 @@
  */
 
 /*
-	EXTERNAL DEPENDENCIES
+  EXTERNAL DEPENDENCIES
  */
 const MD5 = require('md5');
 const compose = require('ramda').compose;
 
 /*
-	INTERNAL DEPENDENCIES
+  INTERNAL DEPENDENCIES
  */
 
 const referenceHelpers = require('../utils/reference-helpers.js');
@@ -31,7 +31,7 @@ const PR = TangramReference.getPolygon(null); // Polygon reference
 const PPR = TangramReference.getPolygonPattern(null);
 
 /*
-	INTERNAL POLYGONS FUNCTIONS
+  INTERNAL POLYGONS FUNCTIONS
  */
 
 const checkPolygonSym = TangramReference.checkSymbolizer('polygon');
@@ -93,25 +93,27 @@ Polygon.getDraw = (c3ss, id) => {
  *
  * @returns default style configuration for polygon
  */
-Polygon.getStyle = function(c3ss, id, ord) {
+Polygon.getStyle = function (c3ss, id, ord) {
   let style = {};
 
-  style['polygons_' + id] = {
-    base: 'polygons',
-    blend: getBlending(c3ss),
-    blend_order: ord || 1
-  };
-
-  if (checkPolPatternSym(c3ss)) {
-    style['polygons_' + id].material = {
-      diffuse: {
-        texture: getTexture(c3ss),
-        mapping: 'uv'
-      }
+  if (checkPolygonSym(c3ss)) {
+    style['polygons_' + id] = {
+      base: 'polygons',
+      blend: getBlending(c3ss),
+      blend_order: ord || 1
     };
+
+    if (checkPolPatternSym(c3ss)) {
+      style['polygons_' + id].material = {
+        diffuse: {
+          texture: getTexture(c3ss),
+          mapping: 'uv'
+        }
+      };
+    }
   }
 
-	return style;
+  return style;
 };
 
 Polygon.getTextures = c3ss => {

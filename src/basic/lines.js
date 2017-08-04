@@ -1,17 +1,17 @@
 /*
-	 ___       ___  ________   _______   ________
-	|\  \     |\  \|\   ___  \|\  ___ \ |\   ____\
-	\ \  \    \ \  \ \  \\ \  \ \   __/|\ \  \___|_
-	 \ \  \    \ \  \ \  \\ \  \ \  \_|/_\ \_____  \
-	  \ \  \____\ \  \ \  \\ \  \ \  \_|\ \|____|\  \
-	   \ \_______\ \__\ \__\\ \__\ \_______\____\_\  \
-	    \|_______|\|__|\|__| \|__|\|_______|\_________\
-	                                       \|_________|
+   ___       ___  ________   _______   ________
+  |\  \     |\  \|\   ___  \|\  ___ \ |\   ____\
+  \ \  \    \ \  \ \  \\ \  \ \   __/|\ \  \___|_
+   \ \  \    \ \  \ \  \\ \  \ \  \_|/_\ \_____  \
+    \ \  \____\ \  \ \  \\ \  \ \  \_|\ \|____|\  \
+     \ \_______\ \__\ \__\\ \__\ \_______\____\_\  \
+      \|_______|\|__|\|__| \|__|\|_______|\_________\
+                                         \|_________|
 
  */
 
 /*
-	EXTERNAL DEPENDENCIES
+  EXTERNAL DEPENDENCIES
  */
 
 const ramda = require('ramda');
@@ -23,7 +23,7 @@ const identity = ramda.identity;
 const cond = ramda.cond;
 
 /*
-	INTERNAL DEPENDENCIES
+  INTERNAL DEPENDENCIES
  */
 const referenceHelpers = require('../utils/reference-helpers.js');
 const getExecutedFn = referenceHelpers.getExecutedFn;
@@ -39,7 +39,7 @@ const notEq = curry(compose(not, equals));
 const LR = TangramReference.getLine(null); // Line reference
 
 /*
-	INTERNAL LINE FUNCTIONS
+  INTERNAL LINE FUNCTIONS
  */
 
 const checkLineSym = TangramReference.checkSymbolizer('line');
@@ -138,15 +138,17 @@ Line.getDraw = (c3ss, id) => {
  *
  * @returns default style configuration for lines
  */
-Line.getStyle = function(c3ss, id, ord) {
+Line.getStyle = function (c3ss, id, ord) {
   let style = {};
 
-  style['lines_' + id] = {
-    base: 'lines',
-    blend: getBlending(c3ss),
-    dash: getDashed(c3ss),
-    blend_order: typeof ord === 'number' ? ord + 1 : 1
-  };
+  if (checkLineSym(c3ss)) {
+    style['lines_' + id] = {
+      base: 'lines',
+      blend: getBlending(c3ss),
+      dash: getDashed(c3ss),
+      blend_order: typeof ord === 'number' ? ord + 1 : 1
+    };
+  }
 
   return style;
 };

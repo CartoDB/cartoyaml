@@ -31,7 +31,7 @@ let pointCCSS =
   }
 `;
 
-describe( 'Point', () => {
+describe('Point', () => {
   const c3ss = Utils.getShader(pointCCSS);
   const id = MD5(pointCCSS);
 
