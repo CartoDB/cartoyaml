@@ -22,4 +22,14 @@ Utils.getShader = function (ccss) {
     .render(ccss).getLayers()[0].shader;
 };
 
+/**
+ * Helper used in the tests.
+ * Returns a function that executes a given function with the given parameters.
+ */
+Utils.runFn = function runFn(fn, param) {
+  return function () {
+    fn(param);
+  };
+};
+
 export default Utils;
