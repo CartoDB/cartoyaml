@@ -5,6 +5,7 @@ const Lines = require('./basic/lines');
 const TextPoints = require('./basic/text');
 const tangramReference = require('tangram-reference');
 const MD5 = require('md5');
+const Validator = require('./validator');
 
 const ref = tangramReference.load('1.0.0');
 const CartoCSSRenderer = new Carto.RendererJS({
@@ -13,6 +14,7 @@ const CartoCSSRenderer = new Carto.RendererJS({
 });
 
 const carto2Draw = function (ccss, index) {
+  Validator.validateCSS(ccss);
   let layers = CartoCSSRenderer.render(ccss).getLayers(),
       id = MD5(ccss),
       tLy = [];
