@@ -93,6 +93,21 @@ var Point = {};
 
 export default Point;
 
+/**
+ * Return a modified version of the size function where the default value
+ * is 0 instead of null. (This null causes an error in tangram, since the size must be a float.)
+ *
+ * This function is a hotfix, in order to fix the real problem, the Utils.wrapCodeInFunction function
+ * must set the default value according to the type of the function.
+ */
+function _fixPointSize(sizeFn) {
+  if (!sizeFn) {
+    return;
+  }
+  let copy = sizeFn.toString();
+  copy = copy.replace(/_value = null/g, '_value = 0');
+  return new Function(copy.substring(copy.indexOf('{') + 1, copy.lastIndexOf('}')));
+}
 
 /**
  * Get the draw (for tangram) object of a point from compiled carto css
@@ -114,6 +129,7 @@ Point.getDraw = function(c3ss, id) {
     point.collide = !getCollide(c3ss);
 	}
   point.order = 0;
+  point.size = _fixPointSize(point.size);
   draw['points_' + id] = point;
 
   return draw;

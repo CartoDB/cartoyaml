@@ -6,32 +6,31 @@ let assert = chai.assert;
 
 import Point from '../../src/basic/points';
 
-let pointCCSS =
-` // Marker with global opacity and border
-  #layer {
-    marker-fill: #F00;
-    marker-width: 15px;
-    marker-line-width: 2px;
-    marker-line-color: #00F;
+describe( 'Point0', () => {
+  const pointCCSS =
+  ` // Marker with global opacity and border
+    #layer {
+      marker-fill: #F00;
+      marker-width: 15px;
+      marker-line-width: 2px;
+      marker-line-color: #00F;
 
-    [height > 10] {
-      marker-width: 20px;
-      marker-line-width: 4px;
-      marker-opacity: 0.6;
-      marker-line-opacity: 0.6;
+      [height > 10] {
+        marker-width: 20px;
+        marker-line-width: 4px;
+        marker-opacity: 0.6;
+        marker-line-opacity: 0.6;
+      }
+
+      [height > 15] {
+        marker-width: 30px;
+        marker-line-width: 6px;
+        marker-opacity: 0.3;
+        marker-line-opacity: 0.3;
+      }
+
     }
-
-    [height > 15] {
-      marker-width: 30px;
-      marker-line-width: 6px;
-      marker-opacity: 0.3;
-      marker-line-opacity: 0.3;
-    }
-
-  }
-`;
-
-describe( 'Point', () => {
+  `;
   const c3ss = Utils.getShader(pointCCSS);
   const id = MD5(pointCCSS);
 
@@ -145,6 +144,40 @@ describe( 'Point', () => {
 
       it('should have blend property equal to overlay', () => {
         assert.equal(points_blend.blend, 'overlay');
+      });
+    });
+  });
+});
+
+describe( 'Point1', () => {
+  const pointCCSS =
+  ` // Test default size value.
+    #layer {
+      [height > 10] {
+        marker-width: 20px;
+      }
+      [height > 15] {
+        marker-width: 30px;
+      }
+    }
+  `;
+  const c3ss = Utils.getShader(pointCCSS);
+  const id = MD5(pointCCSS);
+
+  describe('.getDraw()', () => {
+    let point = Point.getDraw(c3ss, id)['points_' + id];
+    describe('.size: ', () => {
+      it('should have size', () => {
+        assert.property(point, 'size');
+      });
+      it('should be 0 by default', () => {
+        assert.equal(Utils.eval(point.size)({}, 10), '0');
+      });
+      it('should be 20 with height > 10', () => {
+        assert.equal(Utils.eval(point.size)({height: 11}, 10), '20');
+      });
+      it('should be 30 with height > 15', () => {
+        assert.equal(Utils.eval(point.size)({height: 16}, 10), '30');
       });
     });
   });
