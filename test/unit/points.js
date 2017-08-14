@@ -20,13 +20,28 @@ describe('Points', () => {
       const c3ss = Utils.getShader('#layer { marker-allow-overlap: false; }');
       expect(getCollide(c3ss)).to.equal(false);
     });
-    // Should this cases thow an error? Functions are not supported by tangram
+    // Should this cases thow an error? dynamic values for marker-allow-overlap are not supported by tangram!
     xit('TBD', () => {
       const c3ss = Utils.getShader('#layer [zoom <= 5] {marker-allow-overlap: true;}');
       expect(getCollide(c3ss)).to.equal(false);
     });
     xit('TBD', () => {
-      const c3ss = Utils.getShader('#layer [zoom <= 5] {marker-allow-overlap: false;}');
+      const c3ss = Utils.getShader('#layer [zoom <= 5] {marker-allow-overlap: false; }');
+      expect(getCollide(c3ss)).to.equal(false);
+    });
+    xit('TBD', () => {
+      const c3ss = Utils.getShader(`
+      #layer {
+        marker-allow-overlap: true;
+        [zoom <= 5] {
+          marker-allow-overlap: false;
+          marker-width: 5px;
+        }
+        [zoom <= 10] {
+          marker-allow-overlap: true;
+          marker-width: 10px;
+        }
+      }`);
       expect(getCollide(c3ss)).to.equal(false);
     });
   });
