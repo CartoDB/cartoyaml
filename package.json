@@ -16,9 +16,9 @@
     "mocha": "^3.5.0"
   },
   "scripts": {
-    "test": "mocha && npm run lint",
-    "test:watch": "mocha -w",
-    "lint": "$(npm bin)/jshint src/ test/"
+    "test": "mocha",
+    "test:watch": "mocha -w -R dot",
+    "lint": "jshint src/ test/"
   },
   "keywords": [
     "maps",
